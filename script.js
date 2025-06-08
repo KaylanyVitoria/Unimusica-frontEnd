@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const apiUrl = 'playlist-production-d25b.up.railway.app';
+    const apiUrl = 'https://playlist-production-d25b.up.railway.app';
 
     const searchInput = document.getElementById('search-input');
     const playlistsGrid = document.getElementById('playlists-grid');
