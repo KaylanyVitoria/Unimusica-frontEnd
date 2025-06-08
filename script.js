@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // URL da API de playlists (backend da sua colega)
     const playlistsApiUrl = 'https://playlist-production-d25b.up.railway.app/api';
-    // URL da API de músicas (seu backend)
     const musicasApiUrl = 'https://unimusica-production.up.railway.app';
 
     const searchInput = document.getElementById('search-input');
@@ -84,14 +82,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const div = document.createElement('div');
             div.className = 'musica-card';
-            div.textContent = ${nome} - ${artista};
+            div.textContent = `${nome} - ${artista}`;
             container.appendChild(div);
         });
     };
 
     const fetchMusicasToAdd = async () => {
         try {
-            const response = await fetch(${musicasApiUrl}/musicas);
+            const response = await fetch(`${musicasApiUrl}/musicas`);
             if (!response.ok) throw new Error('Falha ao buscar músicas');
             const musicas = await response.json();
             renderMusicasToAdd(musicas);
@@ -139,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const addMusicToPlaylist = async (playlistId, musicId) => {
         try {
-            const response = await fetch(${playlistsApiUrl}/playlists/${playlistId}/musicas, {
+            const response = await fetch(`${playlistsApiUrl}/playlists/${playlistId}/musicas`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ musicaId: musicId })
@@ -155,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchPlaylistById = async (playlistId) => {
         try {
-            const response = await fetch(${playlistsApiUrl}/playlists/${playlistId});
+            const response = await fetch(`${playlistsApiUrl}/playlists/${playlistId}`);
             if (!response.ok) throw new Error('Falha ao buscar playlist');
             const playlist = await response.json();
             selectedPlaylist = playlist;
@@ -168,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchMyPlaylists = async () => {
         try {
-            const response = await fetch(${playlistsApiUrl}/playlists);
+            const response = await fetch(`${playlistsApiUrl}/playlists`);
             if (!response.ok) throw new Error('Falha ao buscar playlists');
             const data = await response.json();
             renderPlaylists(data);
@@ -180,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchMusicas = async () => {
         try {
-            const response = await fetch(${musicasApiUrl}/musicas);
+            const response = await fetch(`${musicasApiUrl}/musicas`);
             if (!response.ok) throw new Error('Falha ao buscar músicas');
             const musicas = await response.json();
             renderMusicas(musicas);
@@ -220,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         try {
-            const response = await fetch(${playlistsApiUrl}/playlists, {
+            const response = await fetch(`${playlistsApiUrl}/playlists`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ nome: name })
@@ -252,8 +250,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('create-playlist-container').style.display = 'none';
         document.getElementById('view-playlist-detail').classList.add('hidden');
         document.getElementById('view-playlist-list').style.display = 'block';
-        // Aqui você pode colocar playlists para descobrir, se tiver
-        // Por enquanto, só limpa ou exibe uma mensagem
         playlistsGrid.innerHTML = '<p class="text-gray">Funcionalidade Descobrir ainda não implementada.</p>';
     });
 
