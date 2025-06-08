@@ -1,48 +1,78 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF--T">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniMúsica - Suas Playlists</title>
+    <title>UniMúsica</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+<div id="app-container">
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i data-lucide="music"></i>
+                <h1>UniMúsica</h1>
+            </div>
+            <div class="search-bar">
+                <i data-lucide="search"></i>
+                <input type="text" id="search-input" placeholder="Buscar playlists...">
+            </div>
+            <div class="user-profile">
+                <i data-lucide="user"></i>
+            </div>
+        </div>
+    </header>
 
-<header>
-    <h1>UniMúsica</h1>
-</header>
+    <main id="main-content">
+        <div id="view-playlist-list">
+            <h2 id="view-title">Minhas Playlists</h2>
+            <p id="view-description" class="text-gray">Suas coleções musicais personalizadas</p>
 
-<main>
-    <section id="secao-criar-playlist">
-        <h2>Criar Nova Playlist</h2>
-        <input type="text" id="nome-playlist-input" placeholder="Dê um nome para a sua playlist">
-        <button id="criar-playlist-btn">Criar</button>
-    </section>
+            <div class="tabs">
+                <button id="tab-minhas" class="active">Minhas Playlists</button>
+                <button id="tab-descobrir">Descobrir</button>
+            </div>
 
-    <hr>
+            <div id="create-playlist-container">
+                <button id="create-playlist-btn">+ Criar Nova Playlist</button>
+            </div>
 
-    <section id="secao-lista-playlists">
-        <h2>Minhas Playlists</h2>
-        <ul id="lista-de-playlists">
-        </ul>
-    </section>
+            <div id="playlists-grid">
+            </div>
+        </div>
 
-    <hr>
+        <div id="view-playlist-detail" class="hidden">
+        </div>
+    </main>
+</div>
 
-    <section id="secao-detalhe-playlist" style="display:none;"> <h2 id="nome-playlist-detalhe">Nome da Playlist</h2>
-        <ul id="lista-de-musicas">
-        </ul>
-
-        <h3>Adicionar Música</h3>
-        <input type="text" id="id-musica-input" placeholder="ID da Música">
-        <button id="adicionar-musica-btn">Adicionar</-button>
-    </section>
-
-</main>
-
-<footer>
-    <p>Projeto de Microsserviços</p>
+<footer id="now-playing-bar" class="hidden">
+    <div class="track-info">
+        <div class="album-art"><i data-lucide="music"></i></div>
+        <div>
+            <p id="now-playing-title">Nome da Música</p>
+            <p id="now-playing-artist" class="text-gray">Artista</p>
+        </div>
+    </div>
+    <div class="player-controls">
+        <button><i data-lucide="play"></i></button>
+    </div>
+    <div class="extra-controls">
+        <button><i data-lucide="heart"></i></button>
+    </div>
 </footer>
+
+<div id="create-modal" class="hidden">
+    <div class="modal-content">
+        <button id="close-modal-btn" class="close-btn">&times;</button>
+        <h2>Criar Nova Playlist</h2>
+        <input type="text" id="new-playlist-name" placeholder="Nome da Playlist">
+        <textarea id="new-playlist-desc" placeholder="Descrição (opcional)"></textarea>
+        <button id="confirm-create-btn">Criar</button>
+    </div>
+</div>
 
 <script src="script.js"></script>
 </body>
