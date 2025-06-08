@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const apiUrl = 'https://playlist-production-d25b.up.railway.app/api';
+    // URL da API de playlists (backend da sua colega)
+    const playlistsApiUrl = 'https://playlist-production-d25b.up.railway.app/api';
+    // URL da API de músicas (seu backend)
+    const musicasApiUrl = 'https://unimusica-production.up.railway.app';
 
     const searchInput = document.getElementById('search-input');
     const playlistsGrid = document.getElementById('playlists-grid');
@@ -11,10 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmCreateBtn = document.getElementById('confirm-create-btn');
     const newPlaylistNameInput = document.getElementById('new-playlist-name');
 
-    // Variável para controlar a playlist selecionada
     let selectedPlaylist = null;
 
-    // Renderiza as playlists na tela e adiciona evento de clique para selecionar uma playlist
     const renderPlaylists = (playlists) => {
         playlistsGrid.innerHTML = '';
         if (!playlists || playlists.length === 0) {
@@ -32,9 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="text-gray">${p.musicas ? p.musicas.length + ' músicas' : '0 músicas'}</p>
             `;
 
-            // Ao clicar na playlist, abre detalhes dela e lista suas músicas
             card.addEventListener('click', () => {
-                selectedPlaylist = p; // guarda a playlist selecionada
+                selectedPlaylist = p;
                 renderPlaylistDetail(p);
             });
 
@@ -42,11 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Renderiza detalhes da playlist e suas músicas
     const renderPlaylistDetail = (playlist) => {
         const detailContainer = document.getElementById('view-playlist-detail');
         detailContainer.classList.remove('hidden');
-        // Oculta lista de playlists para focar no detalhe
         document.getElementById('view-playlist-list').style.display = 'none';
 
         detailContainer.innerHTML = `
@@ -71,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchMusicasToAdd();
     };
 
-    // Renderiza músicas da playlist selecionada
     const renderPlaylistMusicas = (musicas) => {
         const container = document.getElementById('playlist-musicas');
         container.innerHTML = '';
@@ -87,15 +84,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const div = document.createElement('div');
             div.className = 'musica-card';
-            div.textContent = `${nome} - ${artista}`;
+            div.textContent = ${nome} - ${artista};
             container.appendChild(div);
         });
     };
 
-    // Busca músicas disponíveis para adicionar (todas da API)
     const fetchMusicasToAdd = async () => {
         try {
-            const response = await fetch(`${apiUrl}/musicas`);
+            const response = await fetch(${musicasApiUrl}/musicas);
             if (!response.ok) throw new Error('Falha ao buscar músicas');
             const musicas = await response.json();
             renderMusicasToAdd(musicas);
@@ -106,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Renderiza as músicas com botão para adicionar na playlist selecionada
     const renderMusicasToAdd = (musicas) => {
         const container = document.getElementById('musicas-to-add');
         container.innerHTML = '';
@@ -130,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="add-music-btn">Adicionar</button>
             `;
 
-            // Adicionar música à playlist ao clicar no botão
             card.querySelector('.add-music-btn').addEventListener('click', () => {
                 if (!selectedPlaylist) {
                     alert('Selecione uma playlist primeiro clicando nela.');
@@ -143,18 +137,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Função para chamar a API e adicionar a música na playlist
     const addMusicToPlaylist = async (playlistId, musicId) => {
         try {
-            // Pode variar dependendo do endpoint da sua API, ajuste se necessário
-            const response = await fetch(`${apiUrl}/playlists/${playlistId}/musicas`, {
+            const response = await fetch(${playlistsApiUrl}/playlists/${playlistId}/musicas, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ musicaId: musicId })
             });
             if (!response.ok) throw new Error('Falha ao adicionar música');
             alert('Música adicionada com sucesso!');
-            // Atualiza a playlist para mostrar a música adicionada
             fetchPlaylistById(playlistId);
         } catch (error) {
             console.error(error);
@@ -162,10 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Função para buscar playlist atualizada por id e renderizar detalhes
     const fetchPlaylistById = async (playlistId) => {
         try {
-            const response = await fetch(`${apiUrl}/playlists/${playlistId}`);
+            const response = await fetch(${playlistsApiUrl}/playlists/${playlistId});
             if (!response.ok) throw new Error('Falha ao buscar playlist');
             const playlist = await response.json();
             selectedPlaylist = playlist;
@@ -176,11 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Continua o que você já tinha
-
     const fetchMyPlaylists = async () => {
         try {
-            const response = await fetch(`${apiUrl}/playlists`);
+            const response = await fetch(${playlistsApiUrl}/playlists);
             if (!response.ok) throw new Error('Falha ao buscar playlists');
             const data = await response.json();
             renderPlaylists(data);
@@ -192,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchMusicas = async () => {
         try {
-            const response = await fetch(`${apiUrl}/musicas`);
+            const response = await fetch(${musicasApiUrl}/musicas);
             if (!response.ok) throw new Error('Falha ao buscar músicas');
             const musicas = await response.json();
             renderMusicas(musicas);
@@ -232,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         try {
-            const response = await fetch(`${apiUrl}/playlists`, {
+            const response = await fetch(${playlistsApiUrl}/playlists, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ nome: name })
@@ -264,7 +252,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('create-playlist-container').style.display = 'none';
         document.getElementById('view-playlist-detail').classList.add('hidden');
         document.getElementById('view-playlist-list').style.display = 'block';
-        renderPlaylists(discoverPlaylists);
+        // Aqui você pode colocar playlists para descobrir, se tiver
+        // Por enquanto, só limpa ou exibe uma mensagem
+        playlistsGrid.innerHTML = '<p class="text-gray">Funcionalidade Descobrir ainda não implementada.</p>';
     });
 
     const openModal = () => createModal.classList.remove('hidden');
