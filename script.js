@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const searchInput = document.getElementById('search-input');
     const playlistsGrid = document.getElementById('playlists-grid');
+    const musicasGrid = document.getElementById('musicas-grid');
+
     const createPlaylistBtn = document.getElementById('create-playlist-btn');
     const createModal = document.getElementById('create-modal');
     const closeModalBtn = document.getElementById('close-modal-btn');
@@ -36,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchMyPlaylists = async () => {
         try {
-            const response = await fetch(`${apiUrl}/playlists`);
+            const response = await fetch(${apiUrl}/playlists);
             if (!response.ok) throw new Error('Falha ao buscar playlists');
             const data = await response.json();
             renderPlaylists(data);
@@ -46,6 +48,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+
+    const fetchMusicas = async () => {
+        try {
+            const response = await fetch(${apiUrl}/musicas);
+            if (!response.ok) throw new Error('Falha ao buscar músicas');
+            const musicas = await response.json();
+            renderMusicas(musicas);
+        } catch (error) {
+            console.error(error);
+            if (musicasGrid) musicasGrid.innerHTML = '<p class="text-gray">Erro ao carregar as músicas.</p>';
+        }
+    };
+
+    const renderMusicas = (musicas) => {
+        if (!musicasGrid) return;
+        musicasGrid.innerHTML = '';
+        if (!musicas || musicas.length === 0) {
+            musicasGrid.innerHTML = '<p class="text-gray">Nenhuma música encontrada.</p>';
+            return;
+        }
+        musicas.forEach(m => {
+            const card = document.createElement('div');
+            card.className = 'musica-card';
+            card.innerHTML = `
+                <h4>${m.nome} - ${m.artista}</h4>
+                <p>${m.anoLancamento} - ${m.duracao} min</p>
+            `;
+            musicasGrid.appendChild(card);
+        });
+    };
+
     const createNewPlaylist = async () => {
         const name = newPlaylistNameInput.value;
         if (!name) {
@@ -53,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         try {
-            const response = await fetch(`${apiUrl}/playlists`, {
+            const response = await fetch(${apiUrl}/playlists, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ nome: name })
@@ -84,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderPlaylists(discoverPlaylists);
     });
 
-
     const openModal = () => createModal.classList.remove('hidden');
     const closeModal = () => {
         createModal.classList.add('hidden');
@@ -95,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModalBtn.addEventListener('click', closeModal);
     confirmCreateBtn.addEventListener('click', createNewPlaylist);
 
-
     lucide.createIcons();
     fetchMyPlaylists();
+    fetchMusicas();
 });

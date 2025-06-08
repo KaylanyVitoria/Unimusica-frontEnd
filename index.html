@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UniMúsica</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
@@ -17,7 +17,7 @@
             </div>
             <div class="search-bar">
                 <i data-lucide="search"></i>
-                <input type="text" id="search-input" placeholder="Buscar playlists...">
+                <input type="text" id="search-input" placeholder="Buscar playlists..." />
             </div>
             <div class="user-profile">
                 <i data-lucide="user"></i>
@@ -39,12 +39,14 @@
                 <button id="create-playlist-btn">+ Criar Nova Playlist</button>
             </div>
 
-            <div id="playlists-grid">
-            </div>
+            <div id="playlists-grid"></div>
+
+            <!-- Aqui está a parte que você pediu -->
+            <h2>Músicas disponíveis</h2>
+            <div id="musicas-grid"></div>
         </div>
 
-        <div id="view-playlist-detail" class="hidden">
-        </div>
+        <div id="view-playlist-detail" class="hidden"></div>
     </main>
 </div>
 
@@ -68,7 +70,7 @@
     <div class="modal-content">
         <button id="close-modal-btn" class="close-btn">&times;</button>
         <h2>Criar Nova Playlist</h2>
-        <input type="text" id="new-playlist-name" placeholder="Nome da Playlist">
+        <input type="text" id="new-playlist-name" placeholder="Nome da Playlist" />
         <textarea id="new-playlist-desc" placeholder="Descrição (opcional)"></textarea>
         <button id="confirm-create-btn">Criar</button>
     </div>
