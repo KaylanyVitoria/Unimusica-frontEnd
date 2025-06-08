@@ -25,11 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
         playlists.forEach(p => {
             const card = document.createElement('div');
             card.className = 'playlist-card';
-            card.innerHTML = `a
+            card.innerHTML = `
                 <div class="cover-art">
-                    <img src="${p.cover || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop'}" alt="${p.nome}">
+                    <img src="${p.cover || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop'}" alt="${p.name || p.nome}">
                 </div>
-                <h3>${p.nome}</h3>
+                <h3>${p.name || p.nome}</h3>
                 <p class="text-gray">${p.musicas ? p.musicas.length + ' músicas' : ''}</p>
             `;
             playlistsGrid.appendChild(card);
@@ -48,10 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-
+    // Corrigido para buscar músicas no endpoint correto
     const fetchMusicas = async () => {
         try {
-            const response = await fetch(`${apiUrl}/playlists`);
+            const response = await fetch(`${apiUrl}/musicas`); // endpoint correto de músicas
             if (!response.ok) throw new Error('Falha ao buscar músicas');
             const musicas = await response.json();
             renderMusicas(musicas);
@@ -69,11 +69,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         musicas.forEach(m => {
+            const nome = m.nome || m.title || 'Nome desconhecido';
+            const artista = m.artista || m.artist || 'Artista desconhecido';
+            const ano = m.anoLancamento || m.year || 'Ano desconhecido';
+            const duracao = m.duracao || m.duration || 'Duração desconhecida';
+
             const card = document.createElement('div');
             card.className = 'musica-card';
             card.innerHTML = `
-                <h4>${m.nome} - ${m.artista}</h4>
-                <p>${m.anoLancamento} - ${m.duracao} min</p>
+                <h4>${nome} - ${artista}</h4>
+                <p>${ano} - ${duracao} min</p>
             `;
             musicasGrid.appendChild(card);
         });
