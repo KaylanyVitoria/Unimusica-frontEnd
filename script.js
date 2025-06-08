@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         try {
-            const response = await fetch(${apiUrl}/playlists, {
+            const response = await fetch(`${apiUrl}/playlists`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ nome: name })
