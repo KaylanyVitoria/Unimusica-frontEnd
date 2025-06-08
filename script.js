@@ -25,9 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'playlist-card';
             card.innerHTML = `
                 <div class="cover-art">
-                    <img src="${p.cover || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop'}" alt="${p.name}">
+                    <img src="${p.cover || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop'}" alt="${p.nome}">
                 </div>
-                <h3>${p.name}</h3>
+                <h3>${p.nome}</h3>
                 <p class="text-gray">${p.musicas ? p.musicas.length + ' músicas' : ''}</p>
             `;
             playlistsGrid.appendChild(card);
