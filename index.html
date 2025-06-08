@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF--T">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniMúsica - Suas Playlists</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>UniMúsica</h1>
+</header>
+
+<main>
+    <section id="secao-criar-playlist">
+        <h2>Criar Nova Playlist</h2>
+        <input type="text" id="nome-playlist-input" placeholder="Dê um nome para a sua playlist">
+        <button id="criar-playlist-btn">Criar</button>
+    </section>
+
+    <hr>
+
+    <section id="secao-lista-playlists">
+        <h2>Minhas Playlists</h2>
+        <ul id="lista-de-playlists">
+        </ul>
+    </section>
+
+    <hr>
+
+    <section id="secao-detalhe-playlist" style="display:none;"> <h2 id="nome-playlist-detalhe">Nome da Playlist</h2>
+        <ul id="lista-de-musicas">
+        </ul>
+
+        <h3>Adicionar Música</h3>
+        <input type="text" id="id-musica-input" placeholder="ID da Música">
+        <button id="adicionar-musica-btn">Adicionar</-button>
+    </section>
+
+</main>
+
+<footer>
+    <p>Projeto de Microsserviços</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
