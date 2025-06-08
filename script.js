@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playlists.forEach(p => {
             const card = document.createElement('div');
             card.className = 'playlist-card';
-            card.innerHTML = `
+            card.innerHTML = `a
                 <div class="cover-art">
                     <img src="${p.cover || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop'}" alt="${p.nome}">
                 </div>
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchMyPlaylists = async () => {
         try {
-            const response = await fetch(${apiUrl}/playlists);
+            const response = await fetch(`${apiUrl}/playlists`);
             if (!response.ok) throw new Error('Falha ao buscar playlists');
             const data = await response.json();
             renderPlaylists(data);
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchMusicas = async () => {
         try {
-            const response = await fetch(${apiUrl}/musicas);
+            const response = await fetch(`${apiUrl}/playlists`);
             if (!response.ok) throw new Error('Falha ao buscar músicas');
             const musicas = await response.json();
             renderMusicas(musicas);
