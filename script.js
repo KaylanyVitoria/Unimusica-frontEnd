@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const apiUrl = 'https://unimusica-production-aa76.up.railway.app/api';
+    const apiUrl = 'playlist-production-d25b.up.railway.app';
 
     const searchInput = document.getElementById('search-input');
     const playlistsGrid = document.getElementById('playlists-grid');
@@ -14,9 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'd2', name: "Chill Vibes", cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop" }
     ];
 
-    // --- Funções ---
     const renderPlaylists = (playlists) => {
-        playlistsGrid.innerHTML = ''; // Limpa o grid
+        playlistsGrid.innerHTML = '';
         if (!playlists || playlists.length === 0) {
             playlistsGrid.innerHTML = '<p class="text-gray">Nenhuma playlist encontrada.</p>';
             return;
