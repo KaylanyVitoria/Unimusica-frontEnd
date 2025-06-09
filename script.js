@@ -47,8 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         detailContainer.innerHTML = `
             <button id="back-to-list">← Voltar</button>
-            <h2>${playlist.name || playlist.nome}</h2>
-            <p>${playlist.description || playlist.descricao || ''}</p>
+            <h2 contenteditable="true" id="edit-nome">${playlist.nome || playlist.name}</h2>
+            <textarea id="edit-descricao" placeholder="Descrição da playlist">${playlist.descricao || playlist.description || ''}</textarea>
+            <button id="save-edits">Salvar Edição</button>
+            <button id="delete-playlist" style="background-color:red;color:white;">Excluir Playlist</button>
             <h3>Músicas da Playlist</h3>
             <div id="playlist-musicas"></div>
             <h3>Adicionar músicas</h3>
@@ -61,6 +63,18 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedPlaylist = null;
             fetchMyPlaylists();
             fetchMusicas();
+        });
+
+        document.getElementById('save-edits').addEventListener('click', () => {
+            const nome = document.getElementById('edit-nome').innerText;
+            const descricao = document.getElementById('edit-descricao').value;
+            updatePlaylist(playlist.id || playlist._id, nome, descricao);
+        });
+
+        document.getElementById('delete-playlist').addEventListener('click', () => {
+            if (confirm('Tem certeza que deseja excluir esta playlist?')) {
+                deletePlaylist(playlist.id || playlist._id);
+            }
         });
 
         renderPlaylistMusicas(playlist.musicas || []);
@@ -82,7 +96,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const div = document.createElement('div');
             div.className = 'musica-card';
-            div.textContent = `${nome} - ${artista}`;
+            div.innerHTML = `
+                ${nome} - ${artista}
+                <button class="remove-music-btn" style="margin-left:10px;">Remover</button>
+            `;
+
+            div.querySelector('.remove-music-btn').addEventListener('click', () => {
+                if (selectedPlaylist) {
+                    removeMusicFromPlaylist(selectedPlaylist.id || selectedPlaylist._id, m.id || m._id);
+                }
+            });
+
             container.appendChild(div);
         });
     };
@@ -148,6 +172,52 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error(error);
             alert('Erro ao adicionar música.');
+        }
+    };
+
+    const removeMusicFromPlaylist = async (playlistId, musicId) => {
+        try {
+            const response = await fetch(`${playlistsApiUrl}/playlists/${playlistId}/musicas/${musicId}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) throw new Error('Falha ao remover música');
+            alert('Música removida com sucesso!');
+            fetchPlaylistById(playlistId);
+        } catch (error) {
+            console.error(error);
+            alert('Erro ao remover música.');
+        }
+    };
+
+    const updatePlaylist = async (playlistId, nome, descricao) => {
+        try {
+            const response = await fetch(`${playlistsApiUrl}/playlists/${playlistId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, descricao })
+            });
+            if (!response.ok) throw new Error('Falha ao editar playlist');
+            alert('Playlist atualizada!');
+            fetchPlaylistById(playlistId);
+        } catch (error) {
+            console.error(error);
+            alert('Erro ao editar playlist.');
+        }
+    };
+
+    const deletePlaylist = async (playlistId) => {
+        try {
+            const response = await fetch(`${playlistsApiUrl}/playlists/${playlistId}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) throw new Error('Falha ao excluir playlist');
+            alert('Playlist excluída!');
+            document.getElementById('view-playlist-detail').classList.add('hidden');
+            document.getElementById('view-playlist-list').style.display = 'block';
+            fetchMyPlaylists();
+        } catch (error) {
+            console.error(error);
+            alert('Erro ao excluir playlist.');
         }
     };
 
