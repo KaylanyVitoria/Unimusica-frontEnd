@@ -350,11 +350,9 @@ footer .player-controls button:focus-visible {
         gap: 1rem;
     }
 }
-/* ====== ESTILOS PARA A TELA DE DETALHES DA PLAYLIST ====== */
 
-/* Container principal da visualização de detalhes */
 .playlist-detail-view {
-    max-width: 900px; /* Limita a largura para melhor leitura */
+    max-width: 900px;
     margin: 0 auto;
     animation: fadeIn 0.5s ease-in-out;
 }
@@ -364,19 +362,17 @@ footer .player-controls button:focus-visible {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Cabeçalho da playlist (Título e botões de ação) */
 .playlist-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; /* Garante que funcione em telas pequenas */
+    flex-wrap: wrap;
     gap: 1rem;
     margin-bottom: 2rem;
     border-bottom: 1px solid var(--bg-elevated);
     padding-bottom: 1.5rem;
 }
 
-/* Título da playlist na edição */
 .playlist-header .playlist-title-input {
     background: none;
     border: none;
@@ -393,13 +389,11 @@ footer .player-controls button:focus-visible {
     border-color: var(--brand-color);
 }
 
-/* Container para os botões de ação */
 .playlist-header .action-buttons {
     display: flex;
     gap: 0.75rem;
 }
 
-/* Estilo genérico para botões na tela de detalhes */
 .playlist-detail-view button {
     background: var(--bg-elevated);
     color: var(--text-primary);
@@ -416,7 +410,6 @@ footer .player-controls button:focus-visible {
     border-color: var(--text-secondary);
 }
 
-/* Botão de Salvar (Destaque) */
 .playlist-detail-view .save-btn {
     background: var(--brand-color);
     border-color: var(--brand-color);
@@ -426,7 +419,6 @@ footer .player-controls button:focus-visible {
     border-color: var(--brand-color-hover);
 }
 
-/* Botão de Excluir (Perigo) */
 .playlist-detail-view .delete-btn {
     background: #a42626;
     border-color: #a42626;
@@ -437,7 +429,6 @@ footer .player-controls button:focus-visible {
 }
 
 
-/* Títulos das seções (Ex: "Músicas na Playlist") */
 .section-title {
     font-size: 1.5rem;
     font-weight: 600;
@@ -445,7 +436,6 @@ footer .player-controls button:focus-visible {
     margin-bottom: 1rem;
 }
 
-/* Lista de músicas */
 .song-list {
     display: flex;
     flex-direction: column;
@@ -454,7 +444,6 @@ footer .player-controls button:focus-visible {
     padding: 0;
 }
 
-/* Item individual na lista de música */
 .song-item {
     display: flex;
     align-items: center;
@@ -464,6 +453,29 @@ footer .player-controls button:focus-visible {
     border-radius: var(--border-radius);
     transition: background-color var(--transition-speed);
 }
+.action-btn {
+    background: var(--brand-color);
+    color: white;
+    border: none;
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(29, 185, 84, 0.3);
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed), transform 0.15s ease;
+}
+
+.action-btn:hover {
+    background: var(--brand-color-hover);
+    box-shadow: 0 6px 12px rgba(29, 215, 100, 0.6);
+    transform: scale(1.05);
+}
+
+.action-btn:active {
+    transform: scale(0.95);
+}
+
 
 .song-item:hover {
     background: var(--bg-elevated);
@@ -484,14 +496,11 @@ footer .player-controls button:focus-visible {
     color: var(--text-secondary);
 }
 
-/* Botões de Adicionar/Remover */
 .song-item .action-btn {
     padding: 0.4rem 0.9rem;
     font-size: 0.9rem;
 }
-/* ====== ESTILOS DO MODAL DE CRIAÇÃO ====== */
 
-/* O fundo escuro que cobre a tela inteira */
 #create-modal {
     position: fixed;
     top: 0;
