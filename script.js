@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Variáveis de estado
     let selectedPlaylist = null;
-    let allMusicsMap = new Map();
+    let allMusicsMap = new Map(); // NOVO: Mapa para armazenar todas as músicas para consulta rápida
 
     // ====== FUNÇÕES DE RENDERIZAÇÃO ====== //
 
@@ -58,15 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
 
-            <textarea id="edit-descricao" placeholder="Adicione uma descrição...">${playlist.descricao || ''}</textarea>
-
             <h3 class="section-title">Músicas na Playlist</h3>
             <div id="playlist-musicas" class="song-list"></div>
 
             <h3 class="section-title">Adicionar Músicas</h3>
             <div id="musicas-to-add" class="song-list"></div>
         `;
-        // Adicionei o <textarea> de volta e corrigi o CSS para ele na próxima seção.
 
         document.getElementById('back-to-list').addEventListener('click', () => {
             detailContainer.classList.add('hidden');
@@ -77,8 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('save-edits').addEventListener('click', () => {
             const nome = document.getElementById('edit-nome').value;
-            const descricao = document.getElementById('edit-descricao').value; // CORRIGIDO: Pegando a descrição
-            updatePlaylist(playlist.id || playlist._id, nome, descricao); // CORRIGIDO: Enviando a descrição
+            updatePlaylist(playlist.id || playlist._id, nome);
         });
 
         document.getElementById('delete-playlist').addEventListener('click', () => {
@@ -93,14 +89,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderPlaylistMusicas = (musicaIds) => {
         const container = document.getElementById('playlist-musicas');
         container.innerHTML = '';
-        if (!musicaIds || musicaIds.length === 0) {
-            container.innerHTML = '<p class="text-gray">Sua playlist está vazia. Adicione músicas abaixo!</p>';
+        if (musicaIds.length === 0) {
+            container.innerHTML = '<p class="text-gray">Nenhuma música nessa playlist.</p>';
             return;
         }
 
         musicaIds.forEach(musicId => {
             const musica = allMusicsMap.get(musicId);
-            if (!musica) return;
+            if (!musica) return; // Pula se a música não foi encontrada no mapa
 
             const div = document.createElement('div');
             div.className = 'song-item';
@@ -113,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             div.querySelector('.remove-music-btn').addEventListener('click', () => {
                 if (selectedPlaylist) {
+                    // Passa o ID correto para a função de remover
                     removeMusicFromPlaylist(selectedPlaylist.id || selectedPlaylist._id, musicId);
                 }
             });
@@ -120,23 +117,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const renderMusicasToAdd = (todasAsMusicas) => {
+    const renderMusicasToAdd = (musicas) => {
         const container = document.getElementById('musicas-to-add');
         container.innerHTML = '';
-        if (!todasAsMusicas || todasAsMusicas.length === 0) {
-            container.innerHTML = '<p class="text-gray">Nenhuma música disponível encontrada.</p>';
+        if (!musicas || musicas.length === 0) {
+            container.innerHTML = '<p class="text-gray">Nenhuma música encontrada.</p>';
             return;
         }
 
-        // CORRIGIDO: Garantindo que 'selectedPlaylist.musicas' seja um array antes de criar o Set
-        const musicasNaPlaylistIds = new Set(
-            (selectedPlaylist && Array.isArray(selectedPlaylist.musicas)) ? selectedPlaylist.musicas : []
-        );
+        const musicasNaPlaylist = new Set(selectedPlaylist.musicas || []);
 
-        todasAsMusicas.forEach(m => {
-            const musicaId = m.id || m._id;
-            if (musicasNaPlaylistIds.has(musicaId)) {
-                return; // Pula a música se ela já estiver na playlist
+        musicas.forEach(m => {
+            if (musicasNaPlaylist.has(m.id || m._id)) {
+                return;
             }
 
             const card = document.createElement('div');
@@ -149,13 +142,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="action-btn add-music-btn">Adicionar</button>
             `;
             card.querySelector('.add-music-btn').addEventListener('click', () => {
-                if (selectedPlaylist) {
-                    addMusicToPlaylist(selectedPlaylist.id || selectedPlaylist._id, musicaId);
+                if (!selectedPlaylist) {
+                    alert('Selecione uma playlist primeiro clicando nela.');
+                    return;
                 }
+                addMusicToPlaylist(selectedPlaylist.id || selectedPlaylist._id, m.id || m._id);
             });
             container.appendChild(card);
         });
     };
+
 
     const renderMusicas = (musicas) => {
         if (!musicasGrid) return;
@@ -164,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
             musicasGrid.innerHTML = '<p class="text-gray">Nenhuma música encontrada.</p>';
             return;
         }
+
         musicas.forEach(m => {
             const div = document.createElement('div');
             div.className = 'musica-card';
@@ -172,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // ====== FUNÇÕES DE API (FETCH) ====== //
+
 
     const fetchMyPlaylists = async () => {
         try {
@@ -185,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
             playlistsGrid.innerHTML = '<p class="text-gray">Erro ao carregar suas playlists.</p>';
         }
     };
+
 
     const fetchMusicasToAdd = async () => {
         try {
@@ -224,8 +222,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(`${playlistsApiUrl}/playlists/${playlistId}`);
             if (!response.ok) throw new Error('Falha ao buscar playlist');
             const playlist = await response.json();
-            selectedPlaylist = playlist;
-            renderPlaylistDetail(playlist);
+            selectedPlaylist = playlist; // Atualiza a playlist selecionada com os novos dados
+            renderPlaylistDetail(playlist); // Re-renderiza a tela com os dados atualizados
         } catch (error) {
             console.error(error);
             alert('Erro ao atualizar a visualização da playlist.');
@@ -240,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ musicaId: musicId })
             });
             if (!response.ok) throw new Error('Falha ao adicionar música');
-            fetchPlaylistById(playlistId);
+            fetchPlaylistById(playlistId); // Atualiza a view
         } catch (error) {
             console.error(error);
             alert('Erro ao adicionar música.');
@@ -253,20 +251,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'DELETE'
             });
             if (!response.ok) throw new Error('Falha ao remover música');
-            fetchPlaylistById(playlistId);
-
+            fetchPlaylistById(playlistId); // Atualiza a view
         } catch (error) {
             console.error(error);
             alert('Erro ao remover música.');
         }
     };
 
-    const updatePlaylist = async (playlistId, nome, descricao) => {
+    const updatePlaylist = async (playlistId, nome) => {
         try {
             const response = await fetch(`${playlistsApiUrl}/playlists/${playlistId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nome, descricao }) // CORRIGIDO: Enviando a descrição
+                body: JSON.stringify({ nome })
             });
             if (!response.ok) throw new Error('Falha ao editar playlist');
             alert('Playlist atualizada!');
@@ -317,12 +314,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ nome })
             });
             if (!response.ok) throw new Error('Erro ao criar playlist');
-            const newPlaylist = await response.json();
             alert('Playlist criada com sucesso!');
             createModal.classList.add('hidden');
             newPlaylistNameInput.value = '';
             fetchMyPlaylists();
-            renderPlaylistDetail(newPlaylist); // Opcional: abre a nova playlist
         } catch (error) {
             console.error(error);
             alert('Erro ao criar playlist.');

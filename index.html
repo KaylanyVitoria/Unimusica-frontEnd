@@ -36,7 +36,7 @@
             </div>
 
             <div id="create-playlist-container">
-                <button id="create-playlist-btn">+ Criar Nova Playlist</button>
+                <button id="create-playlist-btn" class="create-playlist-btn">+ Criar Nova Playlist</button>
             </div>
 
             <div id="playlists-grid"></div>
@@ -65,13 +65,13 @@
     </div>
 </footer>
 
-<div id="create-modal" class="hidden">
+<div id="create-modal" class="modal-overlay hidden">
     <div class="modal-content">
         <button id="close-modal-btn" class="close-btn">&times;</button>
         <h2>Criar Nova Playlist</h2>
         <input type="text" id="new-playlist-name" placeholder="Nome da Playlist" />
         <textarea id="new-playlist-desc" placeholder="Descrição (opcional)"></textarea>
-        <button id="confirm-create-btn">Criar</button>
+        <button id="confirm-create-btn" class="save-btn">Criar</button>
     </div>
 </div>
 
@@ -88,7 +88,15 @@
             ${playlist.musicas.map(musica => `
               <li class="music-item">
                 <span class="music-info">${musica.nome} - ${musica.artista}</span>
-                <button class="remove-btn" onclick="removerMusica('${musica.id}', '${playlist._id}')">🗑️</button>
+                <button class="icon-btn remove-btn" onclick="removerMusica('${musica.id}', '${playlist._id}')" aria-label="Remover música">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                    <path d="M10 11v6"></path>
+                    <path d="M14 11v6"></path>
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+                  </svg>
+                </button>
               </li>
             `).join('')}
           </ul>
