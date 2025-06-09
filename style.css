@@ -535,3 +535,57 @@ footer .extra-controls button:focus-visible {
         font-size: 2rem;
     }
 }
+.playlist-musics button,
+.playlist-controls button {
+    background: transparent;
+    border: 1.8px solid var(--brand-color);
+    color: var(--brand-color);
+    padding: 0.4rem 0.85rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition:
+      background-color var(--transition-speed),
+      color var(--transition-speed),
+      box-shadow var(--transition-speed);
+    box-shadow: 0 0 6px rgba(29, 185, 84, 0.5);
+    user-select: none;
+    margin-left: 0.5rem;
+}
+
+.playlist-musics button:hover,
+.playlist-musics button:focus-visible,
+.playlist-controls button:hover,
+.playlist-controls button:focus-visible {
+    background-color: var(--brand-color);
+    color: var(--bg-main);
+    box-shadow: 0 0 12px var(--brand-color);
+    outline: none;
+}
+
+.playlist-musics button svg,
+.playlist-controls button svg {
+    stroke: currentColor;
+    width: 1.2rem;
+    height: 1.2rem;
+    vertical-align: middle;
+    margin-right: 0.3rem;
+}
+
+.playlist-controls button.icon-btn {
+    padding: 0.35rem;
+    border-radius: 50%;
+    width: 2.4rem;
+    height: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.35rem;
+}
+
+.playlist-musics button:focus-visible,
+.playlist-controls button:focus-visible {
+    outline: 3px solid var(--brand-color);
+    outline-offset: 2px;
+}
