@@ -36,7 +36,7 @@
             </div>
 
             <div id="create-playlist-container">
-                <button id="create-playlist-btn">+ Criar Nova Playlist</button>
+                <button id="create-playlist-btn" class="create-playlist-btn">+ Criar Nova Playlist</button>
             </div>
 
             <div id="playlists-grid"></div>
@@ -65,13 +65,14 @@
     </div>
 </footer>
 
-<div id="create-modal" class="hidden">
+<!-- Modal com overlay e classes do CSS -->
+<div id="create-modal" class="modal-overlay hidden">
     <div class="modal-content">
         <button id="close-modal-btn" class="close-btn">&times;</button>
         <h2>Criar Nova Playlist</h2>
         <input type="text" id="new-playlist-name" placeholder="Nome da Playlist" />
         <textarea id="new-playlist-desc" placeholder="Descrição (opcional)"></textarea>
-        <button id="confirm-create-btn">Criar</button>
+        <button id="confirm-create-btn" class="save-btn">Criar</button>
     </div>
 </div>
 
