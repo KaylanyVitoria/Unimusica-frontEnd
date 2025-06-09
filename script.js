@@ -266,8 +266,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         musicas.forEach(m => {
-            const nome = m.nome || m.title || 'Nome desconhecido';
-            const artista = m.artista || m.artist || 'Artista desconhecido';
+            const nome = m.nome;
+            const artista = m.artista;
             const ano = m.anoLancamento || m.year || 'Ano desconhecido';
             const duracao = m.duracao || m.duration || 'Duração desconhecida';
 
