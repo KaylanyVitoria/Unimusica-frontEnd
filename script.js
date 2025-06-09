@@ -140,8 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(`${playlistsApiUrl}/playlists/${playlistId}/musicas`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ musicaId: musicId })
-                 });
+                body: JSON.stringify({ musicaId: musicId })
+            });
             if (!response.ok) throw new Error('Falha ao adicionar música');
             alert('Música adicionada com sucesso!');
             fetchPlaylistById(playlistId);
