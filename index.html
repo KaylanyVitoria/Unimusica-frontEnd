@@ -79,24 +79,32 @@
     function renderizarDetalhesPlaylist(playlist) {
       const container = document.getElementById('view-playlist-detail');
       container.innerHTML = `
-        <div class="playlist-container">
-          <h2 class="playlist-title">${playlist.nome}</h2>
-
-          <ul class="song-list">
+        <div class="playlist-detail-view">
+          <div class="playlist-header">
+            <h2 class="playlist-title">${playlist.nome}</h2>
+            <button onclick="voltarParaLista()" class="back-btn">← Voltar</button>
+          </div>
+          <ul class="playlist-musics">
             ${playlist.musicas.map(musica => `
-              <li class="song-card">
-                <span>${musica.nome} - ${musica.artista}</span>
+              <li class="music-item">
+                <span class="music-info">🎵 ${musica.nome} - ${musica.artista}</span>
                 <button class="remove-btn" onclick="removerMusica('${musica.id}', '${playlist._id}')">🗑️</button>
               </li>
             `).join('')}
           </ul>
-
-          <button class="add-song-btn" onclick="abrirModalAdicionarMusica('${playlist._id}')">+ Adicionar Música</button>
+          <div class="add-music-container">
+            <button class="add-song-btn" onclick="abrirModalAdicionarMusica('${playlist._id}')">+ Adicionar Música</button>
+          </div>
         </div>
       `;
 
       document.getElementById('view-playlist-list').classList.add('hidden');
       container.classList.remove('hidden');
+    }
+
+    function voltarParaLista() {
+      document.getElementById('view-playlist-detail').classList.add('hidden');
+      document.getElementById('view-playlist-list').classList.remove('hidden');
     }
 </script>
 <script src="script.js"></script>
