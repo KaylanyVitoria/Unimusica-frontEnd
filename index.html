@@ -87,7 +87,7 @@
           <ul class="playlist-musics">
             ${playlist.musicas.map(musica => `
               <li class="music-item">
-                <span class="music-info">🎵 ${musica.nome} - ${musica.artista}</span>
+                <span class="music-info">${musica.nome} - ${musica.artista}</span>
                 <button class="remove-btn" onclick="removerMusica('${musica.id}', '${playlist._id}')">🗑️</button>
               </li>
             `).join('')}

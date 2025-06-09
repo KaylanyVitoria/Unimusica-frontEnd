@@ -370,3 +370,105 @@ footer .extra-controls button {
 .add-song-btn:hover {
     background-color: #1ed760;
 }
+.playlist-musics {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  max-height: 400px; /* limita altura e adiciona scroll */
+  overflow-y: auto;
+  border-radius: 1rem;
+  background: var(--bg-elevated);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.music-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  transition: background 0.3s ease;
+  cursor: default;
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.music-item:last-child {
+  border-bottom: none;
+}
+
+.music-item:hover {
+  background: var(--bg-main);
+}
+
+.music-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-primary);
+}
+
+.music-info::before {
+  content: "🎵";
+  font-size: 1.2rem;
+}
+
+.remove-btn {
+  background: transparent;
+  border: none;
+  color: #ff4c4c;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.remove-btn:hover {
+  color: #ff1a1a;
+}
+.playlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.playlist-title {
+  font-size: 2rem;
+  font-weight: 700;
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  color: transparent;
+  user-select: none;
+}
+
+.back-btn {
+  background: none;
+  border: 2px solid var(--brand-color);
+  color: var(--brand-color);
+  border-radius: 0.5rem;
+  padding: 0.4rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: var(--brand-color);
+  color: var(--text-primary);
+}
+.add-music-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.add-song-btn {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(29, 185, 84, 0.5);
+}
+
+

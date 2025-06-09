@@ -91,8 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         musicas.forEach(m => {
-            const nome = m.nome || m.title || 'Nome desconhecido';
-            const artista = m.artista || m.artist || 'Artista desconhecido';
+            const nome = m.nome;
+            const artista = m.artista;
 
             const div = document.createElement('div');
             div.className = 'musica-card';
@@ -134,10 +134,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         musicas.forEach(m => {
-            const nome = m.nome || m.title || 'Nome desconhecido';
-            const artista = m.artista || m.artist || 'Artista desconhecido';
-            const ano = m.anoLancamento || m.year || 'Ano desconhecido';
-            const duracao = m.duracao || m.duration || 'Duração desconhecida';
+            const nome = m.nome;
+            const artista = m.artista;
+            const ano = m.anoLancamento;
+            const duracao = m.duracao;
 
             const card = document.createElement('div');
             card.className = 'musica-card';
@@ -268,8 +268,8 @@ document.addEventListener('DOMContentLoaded', () => {
         musicas.forEach(m => {
             const nome = m.nome;
             const artista = m.artista;
-            const ano = m.anoLancamento || m.year || 'Ano desconhecido';
-            const duracao = m.duracao || m.duration || 'Duração desconhecida';
+            const ano = m.anoLancamento;
+            const duracao = m.duracao;
 
             const card = document.createElement('div');
             card.className = 'musica-card';
