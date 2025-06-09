@@ -41,7 +41,6 @@
 
             <div id="playlists-grid"></div>
 
-            <!-- Aqui está a parte que você pediu -->
             <h2>Músicas disponíveis</h2>
             <div id="musicas-grid"></div>
         </div>
@@ -76,6 +75,30 @@
     </div>
 </div>
 
+<script>
+    function renderizarDetalhesPlaylist(playlist) {
+      const container = document.getElementById('view-playlist-detail');
+      container.innerHTML = `
+        <div class="playlist-container">
+          <h2 class="playlist-title">${playlist.nome}</h2>
+
+          <ul class="song-list">
+            ${playlist.musicas.map(musica => `
+              <li class="song-card">
+                <span>${musica.nome} - ${musica.artista}</span>
+                <button class="remove-btn" onclick="removerMusica('${musica.id}', '${playlist._id}')">🗑️</button>
+              </li>
+            `).join('')}
+          </ul>
+
+          <button class="add-song-btn" onclick="abrirModalAdicionarMusica('${playlist._id}')">+ Adicionar Música</button>
+        </div>
+      `;
+
+      document.getElementById('view-playlist-list').classList.add('hidden');
+      container.classList.remove('hidden');
+    }
+</script>
 <script src="script.js"></script>
 </body>
 </html>
