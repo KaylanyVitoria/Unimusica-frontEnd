@@ -25,9 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'playlist-card';
             card.innerHTML = `
                 <div class="cover-art">
-                    <img src="${p.cover || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop'}" alt="${p.name || p.nome}">
+                    <img src="${p.cover || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop'}" alt="${p.nome}">
                 </div>
-                <h3>${p.name || p.nome}</h3>
+                <h3>${p.nome}</h3>
                 <p class="text-gray">${p.musicas ? p.musicas.length + ' músicas' : '0 músicas'}</p>
             `;
 
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         detailContainer.innerHTML = `
             <button id="back-to-list">← Voltar</button>
-            <h2 contenteditable="true" id="edit-nome">${playlist.nome || playlist.name}</h2>
+            <h2 contenteditable="true" id="edit-nome">${playlist.nome}</h2>
             <textarea id="edit-descricao" placeholder="Descrição da playlist">${playlist.descricao || playlist.description || ''}</textarea>
             <button id="save-edits">Salvar Edição</button>
             <button id="delete-playlist" style="background-color:red;color:white;">Excluir Playlist</button>
@@ -265,75 +265,66 @@ document.addEventListener('DOMContentLoaded', () => {
             musicasGrid.innerHTML = '<p class="text-gray">Nenhuma música encontrada.</p>';
             return;
         }
-        musicas.forEach(m => {
-            const nome = m.nome;
-            const artista = m.artista;
-            const ano = m.anoLancamento;
-            const duracao = m.duracao;
 
-            const card = document.createElement('div');
-            card.className = 'musica-card';
-            card.innerHTML = `
-                <h4>${nome} - ${artista}</h4>
-                <p>${ano} - ${duracao} min</p>
-            `;
-            musicasGrid.appendChild(card);
+        musicas.forEach(m => {
+            const div = document.createElement('div');
+            div.className = 'musica-card';
+            div.textContent = `${m.nome} - ${m.artista}`;
+            musicasGrid.appendChild(div);
         });
     };
 
-    const createNewPlaylist = async () => {
-        const name = newPlaylistNameInput.value;
-        if (!name) {
-            alert('Por favor, dê um nome para a playlist.');
+    // Modal controle
+    createPlaylistBtn.addEventListener('click', () => {
+        createModal.classList.remove('hidden');
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        createModal.classList.add('hidden');
+        newPlaylistNameInput.value = '';
+    });
+
+    confirmCreateBtn.addEventListener('click', async () => {
+        const nome = newPlaylistNameInput.value.trim();
+        if (nome === '') {
+            alert('Digite um nome para a playlist.');
             return;
         }
         try {
             const response = await fetch(`${playlistsApiUrl}/playlists`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nome: name })
+                body: JSON.stringify({ nome })
             });
-            if (!response.ok) throw new Error('Falha ao criar playlist');
-            closeModal();
+            if (!response.ok) throw new Error('Erro ao criar playlist');
+            alert('Playlist criada com sucesso!');
+            createModal.classList.add('hidden');
+            newPlaylistNameInput.value = '';
             fetchMyPlaylists();
         } catch (error) {
             console.error(error);
-            alert('Erro ao criar a playlist.');
+            alert('Erro ao criar playlist.');
         }
-    };
-
-    const tabMinhas = document.getElementById('tab-minhas');
-    const tabDescobrir = document.getElementById('tab-descobrir');
-
-    tabMinhas.addEventListener('click', () => {
-        tabMinhas.classList.add('active');
-        tabDescobrir.classList.remove('active');
-        document.getElementById('create-playlist-container').style.display = 'block';
-        document.getElementById('view-playlist-detail').classList.add('hidden');
-        document.getElementById('view-playlist-list').style.display = 'block';
-        fetchMyPlaylists();
     });
 
-    tabDescobrir.addEventListener('click', () => {
-        tabDescobrir.classList.add('active');
-        tabMinhas.classList.remove('active');
-        document.getElementById('create-playlist-container').style.display = 'none';
-        document.getElementById('view-playlist-detail').classList.add('hidden');
-        document.getElementById('view-playlist-list').style.display = 'block';
-        playlistsGrid.innerHTML = '<p class="text-gray">Funcionalidade Descobrir ainda não implementada.</p>';
+    // Busca com debounce simples
+    let debounceTimeout;
+    searchInput.addEventListener('input', () => {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+            const query = searchInput.value.toLowerCase();
+            if (!query) {
+                fetchMyPlaylists();
+                return;
+            }
+            fetch(`${playlistsApiUrl}/playlists`)
+                .then(res => res.json())
+                .then(data => {
+                    const filtered = data.filter(p => p.nome.toLowerCase().includes(query));
+                    renderPlaylists(filtered);
+                });
+        }, 300);
     });
 
-    const openModal = () => createModal.classList.remove('hidden');
-    const closeModal = () => {
-        createModal.classList.add('hidden');
-        newPlaylistNameInput.value = '';
-    };
-
-    createPlaylistBtn.addEventListener('click', openModal);
-    closeModalBtn.addEventListener('click', closeModal);
-    confirmCreateBtn.addEventListener('click', createNewPlaylist);
-
-    lucide.createIcons();
     fetchMyPlaylists();
-    fetchMusicas();
 });
